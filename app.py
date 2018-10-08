@@ -1,3 +1,4 @@
+import json
 import os
 from datetime import datetime, timedelta
 
@@ -265,8 +266,18 @@ def create_app():
         if not codes:
             return create_response(403, {'message': 'Informe sua resposta ex: codes=codigo1,codigo2'})
         if response_one == codes:
-            return create_response(200, {'message': 'Resposta correta'})
+            code_ok = int(os.environ.get('CODE_OK', 0))
+            return create_response(200, {'message': 'Resposta correta - {}'.format(code_ok)})
         return create_response(403, {'message': 'Resposta incorreta'})
+
+    @app.route('/api/tools/', methods=['GET'])
+    @cross_origin()
+    def tools():
+        tool_list = os.environ.get('RESPONSE_TOOLS', [])
+        if not tool_list:
+            return create_response(404, {'message': 'tools not found'})
+        dict_tools = json.loads(tool_list)
+        return create_response(403, dict_tools)
 
     print(app.url_map)
     return app

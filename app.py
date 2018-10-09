@@ -13,7 +13,7 @@ from tricks import db, migrate, marshmallow, db_session
 
 def create_app():
     app = Flask(__name__)
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    CORS(app, resources={r'/api/*': {'origins': '*'}})
     app.config['SECRET_KEY'] = os.urandom(32)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     SQL_TESTDB_URI = 'postgres://postgres:postgres@localhost:5432/checkindb'
@@ -99,10 +99,10 @@ def create_app():
     @app.route('/api/group/checkin/', methods=['POST'])
     @cross_origin()
     def checkin():
-        """
-        :input: {"group":"cbb9cf31-cee5-4208-bfea-654646c83f6d","room":"bdac321b-c65d-463a-97e1-05a11f98024a"}
+        '''
+        :input: {'group':'cbb9cf31-cee5-4208-bfea-654646c83f6d','room':'bdac321b-c65d-463a-97e1-05a11f98024a'}
         :return: boolean
-        """
+        '''
         json_body = request.get_json()
         issuccess = db_session(CheckIn, json_body, request.method)
         return create_response(201, {'status': issuccess})
@@ -119,10 +119,10 @@ def create_app():
     @app.route('/api/config/<config_id>/', methods=['PATCH', 'PUT'])
     @cross_origin()
     def config(config_id):
-        """
-        :input: {"config_name":"settimelimit","challenge_limit":2}
-        :return: {"config_name":"settimelimit","challenge_limit":2 in hours}
-        """
+        '''
+        :input: {'config_name':'settimelimit','challenge_limit':2}
+        :return: {'config_name':'settimelimit','challenge_limit':2 in hours}
+        '''
         json_body = request.get_json()
         issuccess = db_session(Configuration, json_body, id=config_id)
         return create_response(201, {'status': issuccess})
@@ -131,9 +131,9 @@ def create_app():
     @app.route('/api/configs/', defaults={'config_id': None}, methods=['GET'])
     @cross_origin()
     def configs(config_id):
-        """
-        :return: {"config_name":"settimelimit","challenge_limit":2}
-        """
+        '''
+        :return: {'config_name':'settimelimit','challenge_limit':2}
+        '''
         if config_id:
             config_model = Configuration.query.get(config_id)
             return ConfigSchema().jsonify(config_model)
@@ -154,10 +154,10 @@ def create_app():
     @app.route('/api/group/<group_id>/', methods=['PUT', 'PATCH'])
     @cross_origin()
     def group(group_id):
-        """
-        :input: {"group_name":"feliz"}
+        '''
+        :input: {'group_name':'feliz'}
         :return: boolean
-        """
+        '''
         json_body = request.get_json()
         issuccess = db_session(Group, json_body, request.method, id=group_id)
         return create_response(201, {'status': issuccess})
@@ -166,10 +166,10 @@ def create_app():
     @app.route('/api/room/', methods=['POST'], defaults={'room_id': None})
     @cross_origin()
     def room(room_id):
-        """
-        :input: {"room_name":"nodejs"}
+        '''
+        :input: {'room_name':'nodejs'}
         :return: boolean
-        """
+        '''
         json_body = request.get_json()
         issuccess = db_session(Room, json_body, request.method, id=room_id)
         return create_response(201, {'status': issuccess})
@@ -188,15 +188,15 @@ def create_app():
     @app.route('/api/room/qa/', defaults={'room_id': None, 'qa_id': None}, methods=['POST'])
     @cross_origin()
     def room_questions_answers(room_id, qa_id):
-        """
+        '''
         :input: {
-            "question": 5,
-            "answer":"sua resposta5",
-            "num_points":5,
-            "room":"9efcb329-4242-42ba-a1bf-2305f80c86cd"
+            'question': 5,
+            'answer':'sua resposta5',
+            'num_points':5,
+            'room':'9efcb329-4242-42ba-a1bf-2305f80c86cd'
         } or list
         :return: boolean
-        """
+        '''
         json_body = request.get_json()
         issuccess = db_session(QuestionsAnswers, json_body, request.method, id=qa_id, room_id=room_id)
         return create_response(201, {'status': issuccess})
@@ -216,15 +216,15 @@ def create_app():
     @app.route('/api/group/answer/', methods=['POST'])
     @cross_origin()
     def group_answer():
-        """
+        '''
         :input: {
-            "question": 5,
-            "answer":"sua resposta5",
-            "room":"9efcb329-4242-42ba-a1bf-2305f80c86cd",
-            "group":"9efcb329-4242-42ba-a1bf-2305f80c86cd"
+            'question': 5,
+            'answer':'sua resposta5',
+            'room':'9efcb329-4242-42ba-a1bf-2305f80c86cd',
+            'group':'9efcb329-4242-42ba-a1bf-2305f80c86cd'
         }
         :return: try number
-        """
+        '''
         json_body = request.get_json()
         room_id = json_body.get('room')
         group_id = json_body.get('group')
@@ -273,11 +273,17 @@ def create_app():
     @app.route('/api/tools/', methods=['GET'])
     @cross_origin()
     def tools():
-        tool_list = os.environ.get('RESPONSE_TOOLS', [])
-        if not tool_list:
-            return create_response(404, {'message': 'tools not found'})
-        dict_tools = json.loads(tool_list)
-        return create_response(403, dict_tools)
+        tool_list = [
+            {'id': 5, 'name': 'ALAVANCA 1', 'country': 'Brazil', 'code': ''},
+            {'id': 8, 'name': 'PICARETA ESTREITA', 'country': 'Norway', 'code': ''},
+            {'id': 3, 'name': 'CAVADEIRA RETA', 'country': 'Germany', 'code': ''},
+            {'id': 6, 'name': 'LANTERNA', 'country': 'USA', 'code': ''},
+            {'id': 1, 'name': 'PICARETA CHIBANCA', 'country': 'Japan', 'code': ''},
+            {'id': 7, 'name': 'ENXADA DUAS CARAS LARGA', 'country': 'Finland', 'code': ''},
+            {'id': 4, 'name': 'TRADO SATO', 'country': 'Kenya', 'code': ''},
+            {'id': 2, 'name': 'SACHO DUAS PONTAS', 'country': 'Russia', 'code': ''}
+        ]
+        return create_response(403, tool_list)
 
     print(app.url_map)
     return app

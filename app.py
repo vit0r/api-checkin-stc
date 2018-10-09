@@ -283,7 +283,7 @@ def create_app():
             {'id': 4, 'name': 'TRADO SATO', 'country': 'Kenya', 'code': ''},
             {'id': 2, 'name': 'SACHO DUAS PONTAS', 'country': 'Russia', 'code': ''}
         ]
-        return create_response(403, tool_list)
+        return create_response(tool_list)
 
     print(app.url_map)
     return app

@@ -267,7 +267,7 @@ def create_app():
             return create_response(403, {'message': 'Informe sua resposta ex: codes=codigo1,codigo2'})
         if response_one == codes:
             code_ok = int(os.environ.get('CODE_OK', 0))
-            return create_response(200, {'message': 'Resposta correta - {}'.format(code_ok)})
+            return create_response(200, {'message': 'Resposta correta','codigo':code_ok})
         return create_response(403, {'message': 'Resposta incorreta'})
 
     @app.route('/api/tools/', methods=['GET'])

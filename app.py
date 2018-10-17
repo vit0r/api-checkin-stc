@@ -256,7 +256,7 @@ def create_app():
             return GroupAnswersSchema().jsonify(wrong_answers, many=True)
         return create_response(302, {'message_code': 'GAO302'})
 
-    @app.route('/api/challenge/1/awnser/', methods=['GET'])
+    @app.route('/api/challenge/1/answer/', methods=['GET'])
     @cross_origin()
     def challenge_one_answer():
         response_one = str(os.environ.get('RESPONSE_CODES_ONE', '')).upper()

@@ -288,8 +288,9 @@ def create_app():
     @app.route('/api/challenge/6/', methods=['GET'])
     @cross_origin()
     def challenge_six_message():
-        possible = str(os.environ.get('POSSIBLE', ''))
-        return create_response(200, {'message': possible})
+        six_possible = str(os.environ.get('POSSIBLE', ''))
+        six_message = str(os.environ.get('MESSAGE_SIX', ''))
+        return create_response(200, {'possible': six_possible, 'message': six_message})
 
     @app.route('/api/challenge/6/answer/', methods=['GET'])
     @cross_origin()

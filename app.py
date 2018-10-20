@@ -267,7 +267,7 @@ def create_app():
             return create_response(403, {'message': 'Informe sua resposta ex: codes=codigo1,codigo2'})
         if response_one == codes:
             code_ok = int(os.environ.get('CODE_OK', 0))
-            return create_response(200, {'message': 'Resposta correta','codigo':code_ok})
+            return create_response(200, {'message': 'Resposta correta', 'codigo': code_ok})
         return create_response(403, {'message': 'Resposta incorreta'})
 
     @app.route('/api/tools/', methods=['GET'])
@@ -284,6 +284,23 @@ def create_app():
             {'id': 2, 'name': 'SACHO DUAS PONTAS', 'country': 'Russia', 'code': ''}
         ]
         return create_response(200, tool_list)
+
+    @app.route('/api/challenge/6/', methods=['GET'])
+    @cross_origin()
+    def challenge_six_message():
+        possible = str(os.environ.get('POSSIBLE', ''))
+        return create_response(200, {'message': possible})
+
+    @app.route('/api/challenge/6/answer/', methods=['GET'])
+    @cross_origin()
+    def challenge_six_answer():
+        phone = str(request.values.get('phone', '')).upper()
+        if not phone:
+            return create_response(403, {'message': 'Informe sua resposta ex: ?phone=phone_found'})
+        phone_ok = str(os.environ.get('PHONE_OK', ''))
+        if phone_ok == phone:
+            return create_response(200, {'message': 'Resposta correta', 'phone': phone_ok})
+        return create_response(403, {'message': 'Resposta incorreta'})
 
     print(app.url_map)
     return app
